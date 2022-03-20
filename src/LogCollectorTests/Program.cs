@@ -1,18 +1,14 @@
+using LogCollectorTests;
 using LogCollectorTests.Helpers;
 using Serilog;
-using Serilog.Events;
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .Enrich.WithMachineName()
-    .Enrich.WithEnvironmentName()
-    .WriteTo.Console()
-    .CreateLogger();
+SerilogConfiguration.Execute();
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+
+    SerilogConfiguration.Execute(builder.Configuration);
 
     // Add services to the container.
     builder.Services.AddRazorPages();
