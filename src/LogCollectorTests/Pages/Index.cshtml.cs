@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LogCollectorTests.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LogCollectorTests.Pages
@@ -6,19 +7,24 @@ namespace LogCollectorTests.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly LogDataHelper _logDataHelper;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, LogDataHelper logDataHelper)
         {
             _logger = logger;
+            _logDataHelper = logDataHelper;
         }
 
         public void OnGet()
         {
-            _logger.LogDebug("Simple debug from OnGet");
-            _logger.LogInformation("Simple information from OnGet");
-            _logger.LogWarning("Simple warning from OnGet");
-            _logger.LogError("Simple error from OnGet");
-            _logger.LogCritical("Simple critical from OnGet");
+            _logger.LogInformation("Executing OnGet. Calling LogDataHelper");
+
+            _logDataHelper
+                .LogSimpleMessages()
+                .LogMessagesWithValues()
+                .LogMessagesWithSerilog()
+                .LogException()
+                ;
         }
     }
 }
