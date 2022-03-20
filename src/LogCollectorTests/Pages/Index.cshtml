@@ -2,9 +2,28 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    var refreshSeconds = new Random().Next(10) + 5;
 }
 
 <div class="text-center">
     <h1 class="display-4">Log Collector Test</h1>
     <p>Everytime this page loads, a series of log entries are created.</p>
+    <p>This page will refresh automatically in <span id="refreshSeconds"></span> seconds.</p>
 </div>
+
+<script type="text/javascript">
+
+    function refreshTimeout() {
+        if (refreshIn == 0){
+            location.reload();
+            return;
+        }
+        setTimeout(refreshTimeout, 1000);
+        refreshSecondsSpan.textContent = refreshIn;
+        refreshIn--;
+    }
+
+    var refreshIn = @refreshSeconds;
+    const refreshSecondsSpan = document.getElementById('refreshSeconds');
+    refreshTimeout();
+</script>
